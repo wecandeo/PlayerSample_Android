@@ -98,7 +98,7 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
 
 ## LIVE
 ### Player 구성 방법
-- 발급된 videoKey 로 영상 상세정보 조회를 하여 나온 videoUrl 값을 이용하여 Player 구성
+- 발급된 liveKey 로 영상 상세정보 조회를 하여 나온 videoUrl 값을 이용하여 Player 구성
 ```
   wecandeoSdk = new WecandeoSdk(this);
   wecandeoSdk.setSdkListener(this);
