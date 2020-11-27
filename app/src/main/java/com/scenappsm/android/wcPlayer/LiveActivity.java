@@ -86,7 +86,7 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
         wecandeoSdk.setSdkListener(this);
         wecandeoSdk.addPlayerListener(this);
         wecandeoVideo = new WecandeoVideo();
-        // videoKey 를 이용하여 영상 상세정보 조회하여 나온 videoUrl 로 Player 구성
+        // liveKey 를 이용하여 영상 상세정보 조회하여 나온 videoUrl 로 Player 구성
         String url = UrlInfo.LIVE_INFO_URL + liveKey;
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -104,9 +104,9 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
                         }else{
                             // 현재 LIVE 방송 중일 경우 video setting
                             isPlayEnabled = true;
-                            String videoKey = videoDetailObject.get("videoUrl").getAsString();
+                            String videoUrl = videoDetailObject.get("videoUrl").getAsString();
                             wecandeoVideo.setDrm(false);
-                            wecandeoVideo.setVideoKey(videoKey);
+                            wecandeoVideo.setVideoKey(videoUrl);
                             wecandeoSdk.setWecandeoVideo(wecandeoVideo);
                             wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
                             //기본 컨트롤 뷰사용

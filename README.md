@@ -88,8 +88,7 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
   wecandeoSdk.addPlayerListener(this);
   wecandeoVideo = new WecandeoVideo();
   wecandeoVideo.setDrm(false);
-  // 여기에서 나오는 videoKey 는 영상 상세정보 조회로 나온 videoUrl 값입니다.
-  wecandeoVideo.setVideoKey("videoKey");
+  wecandeoVideo.setVideoKey("videoUrl");
   wecandeoSdk.setWecandeoVideo(wecandeoVideo);
   wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
   wecandeoSdk.setUseController(false);
@@ -105,8 +104,7 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
   wecandeoSdk.addPlayerListener(this);
   wecandeoVideo = new WecandeoVideo();
   wecandeoVideo.setDrm(false);
-  // 여기에서 나오는 videoKey 는 영상 상세정보 조회로 나온 videoUrl 값입니다.
-  wecandeoVideo.setVideoKey("videoKey");
+  wecandeoVideo.setVideoKey("videoUrl");
   wecandeoSdk.setWecandeoVideo(wecandeoVideo);
   wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
   wecandeoSdk.setUseController(false);
