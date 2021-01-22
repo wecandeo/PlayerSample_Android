@@ -2,9 +2,13 @@ package com.scenappsm.android.wcPlayer;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
@@ -32,7 +36,7 @@ import org.json.JSONObject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, ExoPlayer.EventListener, SdkInterface.onSdkListener{
+public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ExoPlayer.EventListener, SdkInterface.onSdkListener{
 
     WecandeoSdk wecandeoSdk;
     WecandeoVideo wecandeoVideo;
@@ -52,6 +56,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     Button rewindButton;
     Button forwardButton;
     Button fullScreenButton;
+    Spinner resizeSpinner;
     TextView actionText;
     TextView debugText;
 
@@ -97,8 +102,25 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         forwardButton.setOnClickListener(this);
         fullScreenButton = findViewById(R.id.full_screen_button);
         fullScreenButton.setOnClickListener(this);
+        resizeSpinner = findViewById(R.id.resize_spinner);
+        ArrayAdapter<CharSequence> resizeSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.resize_array, android.R.layout.simple_spinner_item);
+        resizeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        resizeSpinner.setAdapter(resizeSpinnerAdapter);
+        resizeSpinner.setOnItemSelectedListener(this);
         actionText = findViewById(R.id.action_text);
         debugText = findViewById(R.id.debug_text);
+        resizeSpinner.bringToFront();
+        simpleExoPlayerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(resizeSpinner.getVisibility() == View.VISIBLE){
+                    resizeSpinner.setVisibility(View.INVISIBLE);
+                }else{
+                    resizeSpinner.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
     }
 
     private void initWecandeoSetting(){
@@ -230,6 +252,15 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 break;
         }
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(wecandeoSdk != null)
+            wecandeoSdk.setResizeMode(position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     private void openFullscreenDialog(){
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

@@ -63,6 +63,13 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
     - 일시 정지 : wecandeoSdk.pause()
     - 앞으로 넘기기 : wecandeoSdk.fastForward()
     - 뒤로 돌아가기 : wecandeoSdk.rewind()
+    - 종횡비 설정 : wecandeoSdk.setResizeMode(int position)
+      - position 값
+      - 0 (RESIZE_MODE_FIT) : 원하는 종횡비를 얻기 위해 너비 또는 높이를 줄입니다.
+      - 1 (RESIZE_MODE_FIXED_WIDTH) : 너비는 고정되고 높이는 원하는 종횡비를 얻기 위해 증가 또는 감소합니다.
+      - 2 (RESIZE_MODE_FIXED_HEIGHT) : 높이는 고정되고 너비는 종횡비를 얻기 위해 늘리거나 줄입니다.
+      - 3 (RESIZE_MODE_FILL) : 지정된 종횡비가 무시 됩니다.
+      - 4 (RESIZE_MODE_ZOOM) : 원하는 종횡비를 얻기 위해 너비 또는 높이를 늘립니다.
 - DRM
   - 발급된 videoId, videoKey, gId, scretKey, packageId 를 통해 Player 구성
  ```
