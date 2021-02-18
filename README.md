@@ -26,9 +26,7 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
   - liveKey : [CMS > 라이브 채널 > 채널 리스트 > 채널 선택 > 배포 코드] 메뉴에서 `liveKey`를 확인할 수 있습니다.
 
 ### 1. 라이브러리 추가
-    implementation 'com.google.android.exoplayer:exoplayer:r2.5.1'
-    implementation 'com.google.android.exoplayer:exoplayer-core:r2.5.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:r2.5.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.1'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation files('libs/WecandeoPlaySdk.jar')
@@ -39,14 +37,19 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
 ```
 <uses-permission android:name="android.permission.INTERNET" />
 ```
+### 3. AndroidManifest.xml application 태그 안에 usesCleartextTraffic 설정
+```
+<application
+android:usesCleartextTraffic="true">
+```
 
-### 3. - UrlInfo, RequestSingleton Class 는 수정하지 않고 사용
+### 4. - UrlInfo, RequestSingleton Class 는 수정하지 않고 사용
 
 ## VOD
 ### Player 구성 방법
 - 공통
-  - 해당 Activity 에 ExoPlayer.EventListener, SdkInterface.onSdkListener 인터페이스를 구현해야 합니다.
-    - ```Activity implements ExoPlayer.EventListener, SdkInterface.onSdkListener```
+  - 해당 Activity 에 Player.EventListener, SdkInterface.onSdkListener 인터페이스를 구현해야 합니다.
+    - ```Activity implements Player.EventListener, SdkInterface.onSdkListener```
   - onStart(), onResume(), onPause(), onStop() 메서드를 각 메서드에 맞게 wecandeoSdk 호출
   ```
   @Override
@@ -84,7 +87,7 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
   wecandeoVideo.setVideoId("videoId");
   wecandeoVideo.setSecretKey("secretKey");
   wecandeoSdk.setWecandeoVideo(wecandeoVideo);
-  wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
+  wecandeoSdk.setPlayerView(playerView);
   wecandeoSdk.setUseController(false);
  ```
 - Non DRM
@@ -97,7 +100,7 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
   wecandeoVideo.setDrm(false);
   wecandeoVideo.setVideoKey("videoUrl");
   wecandeoSdk.setWecandeoVideo(wecandeoVideo);
-  wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
+  wecandeoSdk.setPlayerView(playerView);
   wecandeoSdk.setUseController(false);
   wecandeoSdk.onStart();
 ```
@@ -113,13 +116,13 @@ WECANDEO 통계를 사용하기 위해서는 활성화 된 WECANDEO 계정이 �
   wecandeoVideo.setDrm(false);
   wecandeoVideo.setVideoKey("videoUrl");
   wecandeoSdk.setWecandeoVideo(wecandeoVideo);
-  wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
+  wecandeoSdk.setPlayerView(playerView);
   wecandeoSdk.setUseController(false);
   wecandeoSdk.onStart();
 ```
 - 공통
-  - 해당 Activity 에 ExoPlayer.EventListener, SdkInterface.onSdkListener 인터페이스를 구현해야 합니다.
-    - ```Activity implements ExoPlayer.EventListener, SdkInterface.onSdkListener```
+  - 해당 Activity 에 Player.EventListener, SdkInterface.onSdkListener 인터페이스를 구현해야 합니다.
+    - ```Activity implements Player.EventListener, SdkInterface.onSdkListener```
   - onStart(), onResume(), onPause(), onStop() 메서드를 각 메서드에 맞게 wecandeoSdk 호출
   ```
   @Override

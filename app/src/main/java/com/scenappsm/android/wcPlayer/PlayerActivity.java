@@ -11,32 +11,27 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.scenappsm.wecandeosdkplayer.SdkInterface;
 import com.scenappsm.wecandeosdkplayer.WecandeoSdk;
 import com.scenappsm.wecandeosdkplayer.WecandeoVideo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ExoPlayer.EventListener, SdkInterface.onSdkListener{
+public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, Player.EventListener, SdkInterface.onSdkListener{
 
     WecandeoSdk wecandeoSdk;
     WecandeoVideo wecandeoVideo;
@@ -44,7 +39,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     ConstraintLayout mainLayout;
     ConstraintLayout playerParent;
-    SimpleExoPlayerView simpleExoPlayerView;
+    PlayerView playerView;
 
     Button retryButton;
     Button stopButton;
@@ -81,7 +76,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private void initViews(){
         mainLayout = findViewById(R.id.main_layout);
         playerParent = findViewById(R.id.player_parent);
-        simpleExoPlayerView = findViewById(R.id.player_view);
+        playerView = findViewById(R.id.player_view);
         retryButton = findViewById(R.id.retry_button);
         retryButton.setOnClickListener(this);
         stopButton = findViewById(R.id.stop_button);
@@ -110,7 +105,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         actionText = findViewById(R.id.action_text);
         debugText = findViewById(R.id.debug_text);
         resizeSpinner.bringToFront();
-        simpleExoPlayerView.setOnTouchListener(new View.OnTouchListener() {
+        playerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(resizeSpinner.getVisibility() == View.VISIBLE){
@@ -139,7 +134,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             wecandeoVideo.setSecretKey(secretKey);
 
             wecandeoSdk.setWecandeoVideo(wecandeoVideo);
-            wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
+            wecandeoSdk.setPlayerView(playerView);
             wecandeoSdk.setDebugTextView(debugText);
             //기본 컨트롤 뷰사용
             wecandeoSdk.setUseController(false);
@@ -158,7 +153,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                             String videoUrl = videoDetailObject.get("videoUrl").getAsString();
                             wecandeoVideo.setVideoKey(videoUrl);
                             wecandeoSdk.setWecandeoVideo(wecandeoVideo);
-                            wecandeoSdk.setSimpleExoPlayerView(simpleExoPlayerView);
+                            wecandeoSdk.setPlayerView(playerView);
                             wecandeoSdk.setDebugTextView(debugText);
                             //기본 컨트롤 뷰사용
                             wecandeoSdk.setUseController(false);
@@ -285,13 +280,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if(playWhenReady && playbackState == 4 && wecandeoSdk.getPlayer() != null){
+    public void onPlaybackStateChanged(int playbackState){
+        if(playbackState == Player.STATE_ENDED && wecandeoSdk.getPlayer() != null){
             wecandeoSdk.complete();
         }
     }
@@ -304,10 +294,4 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
-
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {}
-
-    @Override
-    public void onPositionDiscontinuity() {}
 }
